@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.util.LinkedList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
@@ -23,13 +24,18 @@ import java.util.logging.Logger;
 import dev.leeshuyun.paf_assessment.models.Account;
 import dev.leeshuyun.paf_assessment.models.Transfer;
 import dev.leeshuyun.paf_assessment.services.FundsTransferService;
+import dev.leeshuyun.paf_assessment.services.LogAuditService;
 
+import dev.leeshuyun.paf_assessment.exception.TransferException;
 @Controller
 @RequestMapping("")
 public class FundsTransferController {
     
     @Autowired
-    FundsTransferService accSvc;
+    FundsTransferService fundSvc;
+
+    @Autowired
+    LogAuditService logSvc;
 
     private Logger logger = Logger.getLogger(FundsTransferController.class.getName());
     
@@ -42,7 +48,7 @@ public class FundsTransferController {
         // session.invalidate();
 
         //fetch the accounts data from SQL DB
-        List<Account> accList = accSvc.getAllAccounts();
+        List<Account> accList = fundSvc.getAllAccounts();
 
         // add the SQL data we retrieved to the model
         model.addAttribute("accounts", accList );
@@ -51,15 +57,33 @@ public class FundsTransferController {
     }
     
     @PostMapping(path="/transfer")
-	public String postTransaction(Model model, HttpSession sess
-			, @Valid Transfer transfer, BindingResult bindings) {
+	public String postTransaction(@RequestBody MultiValueMap<String, String> form, Model model
+			, @Valid Transfer transfer, BindingResult bindings) throws TransferException {
 
 		logger.info("POST /transfer: %s".formatted(transfer.toString()));
-
+        
+        for(ObjectError error: bindings.getAllErrors()){
+            System.out.println(error);
+        }
+        //check for errors 
 		// throws us back to index if fail validation
         //this is for the @Valid 
-		if (bindings.hasErrors())
-			return "index";
+
+		// if (bindings.hasErrors())
+		// 	return "index";
+
+        //since it passed error checking we can continue with our transaction
+        //if successful, transfer will come back with isSuccessful marked to true
+        transfer = fundSvc.createTransaction(transfer);
+        //test logging the whole process 
+        // logSvc.logTransaction(transfer);
+
+        // if (!isSuccessful){
+        //     // bindings.addError(err);
+        //     return "index";
+        // }else{
+        //     //we add the transaction to redis
+           
         
             //manual validation
 		// List<ObjectError> errors = accSvc.validateTransaction(transfer);
@@ -69,19 +93,9 @@ public class FundsTransferController {
 		// 	return "index";
 		// }
 
-        //test transfer 
-        Transfer test = new Transfer();
-        test.setCurrentDate();
-        test.setFromAccountId("V9L3Jd1BBI");
-        test.setFromAccountName("fred");
-        test.setToAccountId("fhRq46Y6vB");
-        test.setToAccountName("barney");
-        test.setTransactionId("cnwbshbh");
-        test.setTransferAmount(100.00f);
-
 		// sess.setAttribute("transfer", test);
 
-		model.addAttribute("transfer", test);
+		model.addAttribute("transfer", transfer);
 
 		return "transfer";
 	}

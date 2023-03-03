@@ -7,14 +7,15 @@
     <title>Transaction Complete</title>
 </head>
 <body>
+    <!-- OK -->
     <h1>Transaction Successful</h1>
     <p data-th-object="${transfer}">
         Your transfer of $
         <span data-th-text="*{transferAmount}"></span> 
         from 
-        <span data-th-text="${*{fromAccountName} + ' (' + *{fromAccountId} + ')'  }"></span> 
+        <span data-th-text="*{fromAccountName} + ' (' + *{fromAccountId} + ')'"></span> 
         to 
-        <span data-th-text="${transfer.toAccountName}"></span> 
+        <span data-th-text="*{toAccountName} + ' (' + *{toAccountId} + ')'"></span> 
         is successful.
     </p>
     <p>

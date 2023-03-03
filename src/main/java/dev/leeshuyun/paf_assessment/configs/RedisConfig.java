@@ -12,6 +12,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
+// @ComponentScan("dev.leeshuyun.paf_assessment")
 public class RedisConfig {
 
 	private Logger logger = Logger.getLogger(RedisConfig.class.getName());

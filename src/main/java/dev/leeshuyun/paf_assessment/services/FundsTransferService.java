@@ -23,7 +23,7 @@ public class FundsTransferService {
     
     //transactional. will rollback changes if exception thrown
     @Transactional(rollbackFor = TransferException.class)
-    public Boolean createTransaction(Transfer transfer) throws TransferException{
+    public Transfer createTransaction(Transfer transfer) throws TransferException{
         //generate the id using uuid 
         String transactionId = UUID.randomUUID().toString().substring(0, 8);
         transfer.setTransactionId(transactionId);
@@ -43,23 +43,14 @@ public class FundsTransferService {
         //check if successful, else rollback
         // test and simulate the transactional capabilities with a manual check
         if (isToChangeSuccess && isFromChangeSuccess){
-            return true;
+            transfer.setIsTransferSuccessful(true);
+            return transfer;
         }else{
-            throw new TransferException();
+            throw new TransferException("Transaction failed");
         }
         
     } //end transaction
 
-    // @Transactional
-    // public void transfer(String fromAcct, String toAcct, double amount) {
-    //     final Optional<Double> optFrom= accRepo.getBalance(fromAcct);
-    //     final Optional<Double> optTo= accRepo.getBalance(toAcct);
-    //     if (optFrom.isEmpty() || optTo.isEmpty() || (optFrom.get() < amount))
-    //     throw new IllegalArgumentException("Incorrect parameters");
-        
-    //     if !(accRepo.withdraw(fromAcct, amount) ||
-    //     accRepo.deposit(toAcct, amount))
-    //     throw new DataAccessException("Cannot perform transfer");
-    // }
+
 }
 

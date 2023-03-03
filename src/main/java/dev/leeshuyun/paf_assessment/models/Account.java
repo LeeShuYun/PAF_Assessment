@@ -8,10 +8,5 @@ public class Account {
     String accountId; 
     String name;
     Float balance;
-
-    // public String toJson(){
-    //     JsonObjectBuilder jsonOB = new JsonObjectBuilder();
-
-    // }
 }
 

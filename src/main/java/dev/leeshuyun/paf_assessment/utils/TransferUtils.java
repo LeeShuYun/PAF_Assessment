@@ -10,8 +10,4 @@ public class TransferUtils {
         return UUID.randomUUID().toString().substring(0, 8);
     }
 
-    // public String transferToJson (){
-    //     JsonObjectBuilder jsonOB = new JsonObjectBuilder()
-    //         .add;
-    // }
 }

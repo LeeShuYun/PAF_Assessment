@@ -20,3 +20,5 @@ select * from accounts;
 update accounts set balance = 110.00 where account_id = "V9L3Jd1BBI";
 
 select * from accounts where account_id = "V9L3Jd1BBI";
+
+delete from accounts where id = "V9L3Jd1BBI";
