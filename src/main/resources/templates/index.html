@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funds Transfer</title>
+</head>
+<body>
+    
+    <form method="POST" action="/transfer" data-th-object="${transfer}">
+        <h1> Funds Transfer</h1>
+    <div>
+        <span> From account: </span>
+        <!-- grabbing each person from the accounts model -->
+        <select >
+            <option name="account" data-th-each="person: ${accounts}"> 
+                <span value="${person.accountId}" data-th-text="${person.name} + ' (' + ${person.accountId} + ')'"></span>
+            </option>
+        </select>
+    </div>
+    <div>
+        <span> To account: </span>
+        <select >
+            <option name="account" data-th-each="person: ${accounts}"> 
+                <span value="${person.accountId}" data-th-text="${person.name} + ' (' + ${person.accountId} + ')'"></span>
+            </option>
+        </select>
+    </div>
+    <div>
+        <span> Amount: </span>
+        <input type="text" required name="amount" />
+    </div>
+    <div>
+        <span> Comments: </span>
+        <textarea id="comments" name="comments" rows="4" cols="50"></textarea>
+    </div>
+    <div>
+        <form method="POST" action="/transfer">
+            <button type="submit">Transfer</button>
+        </form>
+    </div>
+    </form>
+
+    <input type="text" name="error" placeholder = "Error Message Print here" /> 
+</body>
+</html>
