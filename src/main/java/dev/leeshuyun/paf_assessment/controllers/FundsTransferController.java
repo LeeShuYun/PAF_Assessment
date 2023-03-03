@@ -68,14 +68,14 @@ public class FundsTransferController {
         //check for errors 
 		// throws us back to index if fail validation
         //this is for the @Valid 
-
 		// if (bindings.hasErrors())
 		// 	return "index";
 
         //since it passed error checking we can continue with our transaction
         //if successful, transfer will come back with isSuccessful marked to true
         transfer = fundSvc.createTransaction(transfer);
-        //test logging the whole process 
+
+        //logging the process 
         // logSvc.logTransaction(transfer);
 
         // if (!isSuccessful){
@@ -85,41 +85,17 @@ public class FundsTransferController {
         //     //we add the transaction to redis
            
         
-            //manual validation
+        //manual validation
 		// List<ObjectError> errors = accSvc.validateTransaction(transfer);
 		// if (!errors.isEmpty()) {
 		// 	for (ObjectError err: errors)
 		// 		bindings.addError(err);
 		// 	return "index";
 		// }
-
-		// sess.setAttribute("transfer", test);
-
+        
+        //this transfer does work thankfully.
 		model.addAttribute("transfer", transfer);
 
 		return "transfer";
 	}
-    // @PostMapping("/transfer")
-    // public String postFundsTransfer(@RequestBody MultiValueMap<String, String> form,
-    //     Model model, HttpSession sess){
-    //         List<LineItem> lineItems = (List<LineItem>)sess.getAttribute("cart");
-    //         if(null == lineItems) {
-    //             //this is the init to catch nulls, bc nulls create errors  errors.
-    //             lineItems = new LinkedList();
-    //             sess.setAttribute("cart", lineItems);
-    //         }
-
-    //         String item = form.getFirst("item");
-    //         Integer quantity = Integer.parseInt(form.getFirst("quantity"));
-    //         lineItems.add(new LineItem(item, quantity));
-    //         Order ord = new Order();
-    //         ord.setCustomerName(form.getFirst("name"));
-    //         ord.setLineItems(lineItems); //for the for loop
-
-    //         //for the next page. this is going to be looping the page until we do 
-    //         //checkout 
-    //         sess.setAttribute("checkoutCart", ord);
-    //         model.addAttribute("lineItems", lineItems);
-    //         return "cart";
-    //     }
 }

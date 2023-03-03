@@ -5,6 +5,7 @@ import java.util.Date;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import jakarta.json.Json;
 import jakarta.json.JsonObjectBuilder;
@@ -17,13 +18,12 @@ public class Transfer {
 
     private String fromAccountName;
 
-
-    
+    @Pattern(regexp="^[0-9]{10,}$", message="Must be least 10 digits long")
     private String fromAccountId;
 
     private String toAccountName;
-
-
+    
+    @Pattern(regexp="^[0-9]{10,}$", message="Must be least 10 digits long")
     private String toAccountId;
 
     @NotNull(message="Please state the amount to be transferred")
